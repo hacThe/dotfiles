@@ -43,8 +43,6 @@ cask "keycastr"
 cask "manico"
 cask "ngrok"
 cask "orbstack"
-cask "proxyman"
-cask "suspicious-package"
 cask "tailscale"
 mas "Messenger", id: 1480068668
 mas "Microsoft Excel", id: 462058435
