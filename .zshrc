@@ -1,11 +1,13 @@
 # zmodload zsh/zprof
 setopt histignoredups
 bindkey -v
+# Temporarily comment this due to error
+ssh-add ~/.ssh/id_rsa_personal
+ssh-add ~/.ssh/id_rsa_work
 
 export EDITOR="nvim"
 export VISUAL="nvim"
 export GPG_TTY=$(tty)
-export XDG_CONFIG_HOME="$HOME/.config"
 
 alias vim="nvim"
 alias rls=$(which ls)
@@ -75,10 +77,11 @@ zinit light zsh-users/zsh-autosuggestions
 
 # zprof
 
-# pnpm
-export PNPM_HOME="/Users/bach/Library/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
+## [Completion]
+## Completion scripts setup. Remove the following line to uninstall
+[[ -f /Users/hacthe/.dart-cli-completion/zsh-config.zsh ]] && . /Users/hacthe/.dart-cli-completion/zsh-config.zsh || true
+## [/Completion]
+
+export PATH="$HOME/fvm/default/bin:$PATH"
+export PATH="/opt/homebrew/opt/openjdk@17/bin:$PATH"
+export JAVA_HOME=/opt/homebrew/Cellar/openjdk@17/17.0.14/libexec/openjdk.jdk/Contents/Home

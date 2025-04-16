@@ -1,129 +1,142 @@
 # Dotfiles
 
-Personal configuration repository for development environment on macOS.
+This repository contains my personal dotfiles managed with [YADM](https://yadm.io/) (Yet Another Dotfiles Manager).
 
-## Contents
+## Overview
 
-- Zsh configuration (`.zshrc`) with Zinit, aliases and environment settings
-- Neovim configuration
-- Tmux configuration with useful plugins
-- Homebrew application list (`.Brewfile`)
-- Advanced CLI tools (fzf, ripgrep, zoxide, atuin, ...)
-- Terminal configuration (Ghostty, Wezterm)
+These dotfiles include configurations for:
 
-## Installation on a new machine
+- Zsh shell with Zinit plugin manager
+- Neovim (via submodule)
+- Tmux with custom configuration
+- Starship prompt
+- Various CLI tools (fzf, exa, bat, etc.)
+- macOS-specific configurations
 
-### 1. Install basic tools
+## Prerequisites
+
+- Git
+- YADM
+- macOS (primary target, though some configs may work on other systems)
+
+## Installation
+
+### 1. Install YADM
 
 ```bash
-# Install Homebrew
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# macOS with Homebrew
+brew install yadm
 
-# Install Git
-brew install git
+# Other systems
+curl -fLo /usr/local/bin/yadm https://github.com/TheLocehiliosan/yadm/raw/master/yadm
+chmod a+x /usr/local/bin/yadm
 ```
 
-### 2. Clone repository
+### 2. Clone the repository
 
 ```bash
-# Clone repository to home directory
-git clone --recursive https://github.com/yourusername/dotfiles.git ~/dotfiles
-
-# Or if already cloned, update submodules
-git submodule update --init --recursive
+yadm clone https://github.com/hacThe/dotfiles.git
 ```
 
-### 3. Link configuration files
+### 3. Run the bootstrap script
+
+The bootstrap script will:
+- Initialize Git submodules
+- Install Homebrew (if on macOS and not already installed)
+- Install packages from the Brewfile
 
 ```bash
-# Navigate to dotfiles directory
-cd ~/dotfiles
-
-# Create symbolic links for configuration files
-ln -sf ~/dotfiles/.zshrc ~/.zshrc
-ln -sf ~/dotfiles/.config ~/.config
-ln -sf ~/dotfiles/.local ~/.local
-ln -sf ~/dotfiles/.Brewfile ~/.Brewfile
-```
-
-### 4. Install applications from Brewfile
-
-```bash
-# Install all applications from Brewfile
-brew bundle --file=~/.Brewfile
-```
-
-### 5. Install Zinit (Zsh plugin manager)
-
-```bash
-# Zinit will be automatically installed when you open Zsh for the first time
-# However, you can install it manually with the command:
-mkdir -p ~/.local/share/zinit
-git clone https://github.com/zdharma-continuum/zinit ~/.local/share/zinit/zinit.git
-```
-
-### 6. Install fonts (optional)
-
-```bash
-# Will be automatically installed through Brewfile if you use Homebrew
-# Or manually install Nerd Fonts and SF Mono
-```
-
-### 7. Restart shell
-
-```bash
-# Restart shell to apply new configuration
-exec zsh
+yadm bootstrap
 ```
 
 ## Key Features
 
-- **Modern Terminal**: Customized prompt via Starship
-- **Command History**: Store and search shell history with Atuin
-- **Directory Navigation**: Quickly switch directories with Zoxide
-- **Fuzzy Finding**: Search files, history and more with fzf
-- **Terminal Sessions**: Manage work sessions with Tmux
-- **Editor**: Optimized Neovim configuration for development
+### Managed Files
 
-## Customization
+- `.zshrc` - Shell configuration with various aliases and plugin setup
+- `.config/nvim` - Neovim configuration (as a Git submodule)
+- `.config/tmux` - Tmux configuration with plugins
+- `.config/starship.toml` - Starship prompt configuration
+- `.config/btop` - System monitoring configuration
+- `.Brewfile` - Homebrew packages and applications
 
-You can customize the configurations to suit your personal needs:
+### Git Submodules
 
-- Edit `.zshrc` to add/remove aliases or shell configuration
-- Edit `.Brewfile` to add/remove applications
-- Customize Neovim through the `.config/nvim` directory
-- Customize Tmux in `.config/tmux`
+The following are managed as Git submodules:
 
-## Updates
+- Neovim configuration
+- Tmux plugins
+- Oh My Tmux configuration
+
+To update all submodules:
 
 ```bash
-# Navigate to dotfiles directory
-cd ~/dotfiles
-
-# Pull latest changes
-git pull
-
-# Update submodules
-git submodule update --remote
-
-# Update Homebrew applications
-brew bundle --file=~/.Brewfile
+yadm submodule update --recursive --remote
 ```
 
-## Useful Shortcuts
+### Bootstrap Script
 
-- `^P`, `^N`: Search command history
-- `^Space`: Accept suggestion from zsh-autosuggestions
-- `Alt+C`: Jump to subdirectory with fzf
-- `Ctrl+R`: Search command history with Atuin
-- `z <keyword>`: Jump to previously accessed directory
+The bootstrap script (`.config/yadm/bootstrap`) performs initial setup:
 
-## Included Tools
+```bash
+yadm bootstrap
+```
 
-- [Bat](https://github.com/sharkdp/bat): Cat with syntax highlighting and Git integration
-- [Eza](https://github.com/eza-community/eza): A replacement for ls with more features
-- [Ripgrep](https://github.com/BurntSushi/ripgrep): Text search faster than grep
-- [Lazygit](https://github.com/jesseduffield/lazygit): TUI interface for Git
-- [FZF](https://github.com/junegunn/fzf): Fuzzy finder
-- [Zoxide](https://github.com/ajeetdsouza/zoxide): Smart directory navigation
-- [Tmux](https://github.com/tmux/tmux): Terminal session management and persistence 
+## Usage
+
+### Adding/Updating Files
+
+```bash
+# Add a new file to be tracked
+yadm add ~/.some_config_file
+
+# Commit changes
+yadm commit -m "Add/update configuration"
+
+# Push changes
+yadm push
+```
+
+### Working with Alternate Files
+
+YADM supports system-specific alternate files. For example:
+
+```bash
+# Create an alternate version of a file for macOS
+yadm add ~/.config/app/config##os.Darwin
+
+# Create an alternate for a specific hostname
+yadm add ~/.config/app/config##h.myhostname
+```
+
+### Encryption (Optional)
+
+To encrypt sensitive files:
+
+```bash
+# Configure which files to encrypt (first time)
+yadm encrypt
+
+# Add a file to the encrypted archive
+yadm add -f ~/.ssh/config
+yadm encrypt
+
+# To decrypt files after cloning
+yadm decrypt
+```
+
+## Tips and Tricks
+
+- Use `yadm list` to see all tracked files
+- Use `yadm status` to see the status of your dotfiles repository
+- Use `yadm diff` to see changes to tracked files
+
+## Customizing
+
+1. Fork this repository
+2. Modify files to suit your preferences
+3. Add your own configurations
+
+## License
+
+These dotfiles are available under the MIT License. Feel free to use and modify as you wish. 
