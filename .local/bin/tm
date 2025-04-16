@@ -1,0 +1,5 @@
+#!/bin/zsh
+
+if command -v tmux &> /dev/null && [ -z "$TMUX" ]; then
+    tmux attach-session || echo "No previous Tmux session found."
+fi
